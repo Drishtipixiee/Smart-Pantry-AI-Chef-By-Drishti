@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Pantry</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>My Smart Pantry</h1>
+
+        <div class="dashboard">
+            <div class="chart-container">
+                <h2>Expiry Status</h2>
+                <canvas id="expiry-chart"></canvas>
+            </div>
+            <div class="stats-container">
+                <h2>Pantry Stats</h2>
+                <div id="total-items"></div>
+            </div>
+        </div>
+
+        <h2>Current Items</h2>
+        <ul id="pantry-list"></ul>
+
+        <div class="chef-section">
+            <h2>AI Chef: Custom Recipe Generator</h2>
+            <p>Select ingredients from your pantry to generate a unique recipe!</p>
+            <div id="ingredient-checklist"></div>
+            <button id="chef-suggest-btn">Generate Recipe</button>
+            <div id="chef-suggestions"></div>
+        </div>
+
+        <h2>Add New Item</h2>
+        <div id="scanner-container">
+            <button id="toggle-scanner-btn">Scan with Live Camera</button>
+            <div id="qr-reader" style="width: 100%; display: none;"></div>
+            <div class="file-upload-wrapper">
+                <p>OR Upload an image of a barcode:</p>
+                <input type="file" id="barcode-file-input" accept="image/*">
+            </div>
+            <div id="qr-reader-results"></div>
+        </div>
+
+        <form id="add-item-form">
+            <input type="text" id="item-name" placeholder="Item Name" required>
+            <input type="date" id="item-expiry" required>
+            <input type="number" id="item-quantity" placeholder="Quantity" value="1" min="1" required>
+            <button type="submit">Add Item</button>
+        </form>
+    </div>
+
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Edit Item</h2>
+            <form id="edit-item-form">
+                <input type="hidden" id="edit-item-id">
+                <label for="edit-item-name">Name:</label>
+                <input type="text" id="edit-item-name" required>
+                <label for="edit-item-expiry">Expiry Date:</label>
+                <input type="date" id="edit-item-expiry" required>
+                <label for="edit-item-quantity">Quantity:</label>
+                <input type="number" id="edit-item-quantity" min="1" required>
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</body>
+</html>

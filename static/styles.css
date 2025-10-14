@@ -1,0 +1,92 @@
+/* --- Global Styles & Fonts --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+:root {
+    --primary-color: #4A90E2;
+    --background-color: #F7F9FC;
+    --card-background: #FFFFFF;
+    --text-color: #333333;
+    --danger-color: #E74C3C;
+    --success-color: #2ECC71;
+    --border-color: #EAECEF;
+    --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+/* --- Main App Container --- */
+.container {
+    width: 100%;
+    max-width: 700px;
+    background: var(--card-background);
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: var(--box-shadow);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h1 { font-size: 2.5rem; color: var(--primary-color); text-align: center; margin-bottom: 10px; }
+h2 { font-size: 1.5rem; color: var(--text-color); border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-top: 30px; margin-bottom: 20px; }
+
+/* --- Dashboard --- */
+.dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid var(--border-color); }
+.chart-container, .stats-container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.stats-container h2 { border: none; margin-top: 0; }
+#total-items { font-size: 1.5rem; font-weight: 600; color: var(--primary-color); }
+#total-items span { font-size: 2.5rem; }
+
+/* --- Pantry List --- */
+ul { list-style-type: none; padding: 0; }
+li { background: #fff; padding: 15px 20px; margin-bottom: 12px; border-radius: 8px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; transition: all 0.2s ease-in-out; }
+li:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.06); }
+li span { font-weight: 500; }
+
+/* --- AI Chef --- */
+.chef-section { margin: 30px 0; text-align: center; }
+#chef-suggest-btn { background-color: var(--success-color); color: white; width: 100%; padding: 15px; font-size: 1.1rem; }
+#chef-suggest-btn:hover { background-color: #27ae60; }
+#chef-suggestions { margin-top: 20px; padding: 15px; background: #f0fdf4; border-radius: 8px; border: 1px solid var(--success-color); text-align: left; display: none; }
+#ingredient-checklist { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; justify-content: center; }
+.ingredient-label { display: block; background: var(--border-color); padding: 8px 15px; border-radius: 20px; cursor: pointer; transition: all 0.2s ease-in-out; }
+.ingredient-label input { display: none; }
+.ingredient-label:hover { background: #d8dde4; }
+.ingredient-label input:checked + span { font-weight: 600; color: var(--primary-color); }
+
+/* --- Barcode Scanner --- */
+#scanner-container { margin-top: 20px; }
+#toggle-scanner-btn { width: 100%; margin-bottom: 15px; background-color: #777; }
+.file-upload-wrapper { margin: 20px 0; text-align: center; border: 2px dashed var(--border-color); padding: 20px; border-radius: 8px; }
+
+/* --- Forms & Buttons --- */
+#add-item-form { display: grid; grid-template-columns: 2fr 1.5fr 1fr; gap: 15px; align-items: center; margin-top: 20px; }
+#add-item-form button[type="submit"] { grid-column: span 3; }
+input { padding: 12px; font-family: 'Poppins', sans-serif; font-size: 1rem; border: 1px solid var(--border-color); border-radius: 6px; transition: border-color 0.2s; }
+input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2); }
+button { padding: 12px 18px; border: none; border-radius: 6px; cursor: pointer; font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 1rem; transition: all 0.2s ease-in-out; }
+form button[type="submit"] { background-color: var(--primary-color); color: white; }
+form button[type="submit"]:hover { opacity: 0.9; transform: translateY(-2px); }
+.delete-btn { padding: 6px 12px; background-color: var(--danger-color); color: white; font-size: 0.8rem; margin-left: 15px; }
+.delete-btn:hover { background-color: #c0392b; }
+.edit-btn { padding: 6px 12px; background-color: var(--primary-color); color: white; font-size: 0.8rem; }
+.edit-btn:hover { background-color: #3a7bc8; }
+
+/* --- Modal --- */
+.modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
+.modal-content { background-color: #fefefe; margin: 15% auto; padding: 20px 30px; border: 1px solid #888; width: 80%; max-width: 500px; border-radius: 12px; position: relative; }
+.close-btn { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
+#edit-item-form label { display: block; margin-top: 10px; font-weight: 600; }
+#edit-item-form input { width: 100%; box-sizing: border-box; margin-bottom: 15px; }
