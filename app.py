@@ -3,19 +3,31 @@ import requests
 import google.generativeai as genai
 from flask import Flask, request, jsonify, render_template
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from datetime import datetime, timedelta
 
 # --- Basic Setup & API Key Configuration ---
 app = Flask(__name__)
-# IMPORTANT: Replace "YOUR_API_KEY" with your actual Google AI Studio API key
-genai.configure(api_key="YOUR_API_KEY") 
+CORS(app)
+
+# Use Environment Variables for security
+api_key = os.environ.get("GEMINI_API_KEY", "YOUR_API_KEY_HERE")
+genai.configure(api_key=api_key) 
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 # --- Database Configuration ---
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'pantry.db')
+if os.environ.get('VERCEL'):
+    # Vercel's file system is read-only except for /tmp
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/pantry.db'
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'pantry.db')
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# --- Initialize Database ---
+# This line fixes the "db is not defined" error
 db = SQLAlchemy(app)
 
 # --- Database Model Definition ---
@@ -53,7 +65,7 @@ def home():
 @app.route('/items', methods=['POST'])
 def add_item():
     data = request.get_json()
-    if not data or not 'name' in data or not 'expiry_date' in data:
+    if not data or 'name' not in data or 'expiry_date' not in data:
         return jsonify({'error': 'Item name and expiry date are required'}), 400
     try:
         quantity = int(data.get('quantity', 1))
@@ -133,7 +145,9 @@ def lookup_barcode():
     except requests.exceptions.RequestException as e:
         return jsonify({'error': f'API request failed: {e}'}), 500
 
-# This is the "ignition switch" for your app
+# Required for Vercel deployment
+app = app
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
